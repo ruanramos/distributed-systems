@@ -9,6 +9,7 @@ import time
 
 HOST = ""
 PORT = 50002
+CON_TIMEOUT = 15
 validOperators = ['-', '+', '*', '/']
 
 def oldCode():
@@ -53,8 +54,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as serverSocket:
 
     while True:
         # waits for first connection can be blocking
-        print("Server is waiting for client connection")
-        serverSocket.settimeout(15)
+        print(f"Server is waiting for client connection. Timeout in {CON_TIMEOUT} seconds")
+        serverSocket.settimeout(CON_TIMEOUT)
         clientSocket, address = serverSocket.accept()
         
         with clientSocket:
