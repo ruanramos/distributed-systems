@@ -24,19 +24,23 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as serverSocket:
         with clientSocket:
             print('Connected by', address)
             
-            receivedNumbers = []
-            dataReceived = clientSocket.recv(1024)  # waits for data, can be blocking
-            try:
+            while True:
+                receivedNumbers = []
+                dataReceived = clientSocket.recv(1024)  # waits for data, can be blocking
+                if not dataReceived:
+                    break
                 receivedNumbers = str(dataReceived, 'utf8').split()
+                print(receivedNumbers)
                 print('Received Numbers ' + receivedNumbers[0] + " and " + receivedNumbers[1])
-            except:
-                clientSocket.close()
-            
-            operatorReceived = clientSocket.recv(1024) # waits for operation
-            operatorReceived = str(operatorReceived, 'utf8')
-            print('Received operator ' + operatorReceived)
-            
-            result = str(eval(receivedNumbers[0] + operatorReceived + receivedNumbers[1]))
-                    
-            print("Server sent the answer: " + result)
-            clientSocket.send(bytes(result, 'utf8'))
+                
+                operatorReceived = clientSocket.recv(1024) # waits for operation
+                if not operatorReceived:
+                    break
+                operatorReceived = str(operatorReceived, 'utf8')
+                print('Received operator ' + operatorReceived)
+                
+                result = str(eval(receivedNumbers[0] + operatorReceived + receivedNumbers[1]))
+                        
+                print("Server sent the answer: " + result)
+                clientSocket.send(bytes(result, 'utf8'))
+    print("Connection to " + address + " closed")
