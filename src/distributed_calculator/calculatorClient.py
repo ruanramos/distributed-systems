@@ -26,7 +26,11 @@ def constructMessage(it):
         message += i + " "
     return message
 
-if __name__ == "__main__":
+def getExpression():
+    expression = input("Type an arithmetic expression: ")
+    return expression
+
+def oldCode():
     hostname = socket.gethostname()
     validOperators = ['-', '+', '*', '/']
 
@@ -42,3 +46,23 @@ if __name__ == "__main__":
             clientSocket.send(bytes(operator, 'utf8'))
             result = clientSocket.recv(1024)
             print("Result: " + str(result, 'utf8'))
+
+if __name__ == "__main__":
+    #oldCode()
+    hostname = socket.gethostname()
+    validOperators = ['-', '+', '*', '/']
+
+    HOST = hostname
+    PORT = 50002
+
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as clientSocket:
+        clientSocket.connect((HOST, PORT))
+        print("Client connected to server!")
+        while True:
+            clientSocket.send(bytes(getExpression(), 'utf8'))
+            result = clientSocket.recv(1024)
+            result = str(result, 'utf8')
+            if result == "c":
+                break
+            print("Result: " + result)
+        print("Client is closing connection")
