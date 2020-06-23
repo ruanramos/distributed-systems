@@ -9,19 +9,20 @@ from distributed_word_counter.server.counterServerLogic import OptionHandler
 
 
 class Connector():
-    def __init__(self, host, port, timeout=0):
+    def __init__(self, host, port, numToListenTo=1, timeout=0):
         super().__init__()
         self.host = host
         self.port = port
         self.timeout = timeout
+        self.numToListenTo = numToListenTo
 
-    def listenToClients(self):
+    def acceptConnections(self):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as serverSocket:
             self.host = socket.gethostbyname(socket.gethostname())
             print(self.host, socket.gethostname(),
                   socket.gethostbyname(socket.gethostname()))
             serverSocket.bind((self.host, self.port))
-            serverSocket.listen(1)
+            serverSocket.listen(self.numToListenTo)
             print(
                 f"Server is waiting for client connection. Timeout in {self.timeout} seconds")
             serverSocket.settimeout(self.timeout)
