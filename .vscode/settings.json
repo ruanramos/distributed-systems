@@ -1,5 +1,4 @@
 {
-    "python.pythonPath": "env/bin/python",
     "code-runner.executorMap": {
         "python": "venv/bin/python",
         
@@ -11,5 +10,14 @@
         "**/.factorypath": true
     },
     "python.linting.pylintEnabled": true,
-    "python.linting.enabled": true
+    "python.linting.enabled": true,
+    "python.testing.promptToConfigure": false,
+    "python.testing.pytestEnabled": false,
+    "python.testing.unittestEnabled": false,
+    "python.testing.nosetestsEnabled": false,
+    "editor.mouseWheelZoom": true,
+    "terminal.integrated.fontSize": 18,
+    "editor.fontSize": 18,
+    "explorer.autoReveal": true,
+    "python.terminal.activateEnvInCurrentTerminal": false
 }
