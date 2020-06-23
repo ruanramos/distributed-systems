@@ -4,9 +4,10 @@ from distributed_word_counter.server.counterServerDbLogic import getFile, getAll
 
 
 class OptionHandler():
-    def __init__(self, option):
+    def __init__(self, option, clientSocket):
         super().__init__()
         self.option = option
+        self.clientSocket = clientSocket
 
     def manageOption(self):
         if self.option == 1:
@@ -19,5 +20,5 @@ class OptionHandler():
             # create new file
             pass
         else:
-            # quit
+            self.clientSocket.send(bytes("close", 'utf8'))
             pass
