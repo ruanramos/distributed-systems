@@ -1,4 +1,4 @@
-from distributed_word_counter.server.counterServerDbLogic import getFile, getAllFiles
+import distributed_word_counter.server.counterServerDbLogic as dbl
 
 # Here the logic of word counting will happen
 
@@ -12,6 +12,10 @@ class OptionHandler():
     def manageOption(self):
         if self.option == 1:
             # list all saved files
+            dbQuerier = dbl.DatabaseQuerier()
+            files = dbQuerier.getAllFiles()
+            for f in files:
+                print(f"{f['name']}.{f['extension']}")
             pass
         elif self.option == 2:
             # choose file to analyze
