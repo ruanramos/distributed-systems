@@ -40,6 +40,12 @@ if __name__ == "__main__":
         if str(answer, 'utf8') == "close":
             print("Quiting program!")
             exit(0)
+        else:
+            receivedData = str(answer, 'utf8').split("\n")
+            if receivedData[0] == "list":
+                print("--------- These are the saved files --------\n\n")
+                print(str(answer, 'utf8'))
+                print("\n\n--------------------------------------------\n\n")
         # result = str(result, 'utf8')
         # if result == "c":
         #     break

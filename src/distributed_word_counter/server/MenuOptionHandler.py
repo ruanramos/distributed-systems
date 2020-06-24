@@ -17,11 +17,14 @@ class MenuOptionHandler():
             # list all saved files
             dbHandler = DatabaseHandler()
             files = dbHandler.getAllFiles()
+            answer = ["list"]
             for f in files:
-                print(f"{f['name']}.{f['extension']}")
+                answer.append(f"{f['name']}.{f['extension']}")
+            self.clientSocket.send(bytes("\n".join(answer), 'utf8'))
             pass
         elif self.option == 2:
             # choose file to analyze
+            answer = ['analize']
             pass
         elif self.option == 3:
             # create new file
