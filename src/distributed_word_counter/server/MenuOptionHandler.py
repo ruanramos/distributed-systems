@@ -7,7 +7,9 @@ class MenuOptionHandler():
     def __init__(self, loadedData, clientSocket, clientAddress):
         super().__init__()
         self.option = int(loadedData['option'])
-        self.fileToAnalize = loadedData['filename']
+        if loadedData['filename']:
+            filename, *fileExtension = loadedData['filename'].split('.')
+            self.fileToAnalize = filename
         self.clientSocket = clientSocket
         self.clientAddress = clientAddress
 
@@ -24,6 +26,7 @@ class MenuOptionHandler():
             # list all saved files
             print(
                 f"Client {self.clientAddress} asked for a list of saved files")
+            # TODO pass this part to the analizer
             dbHandler = DatabaseHandler()
             files = dbHandler.getAllFiles()
             obj = {
@@ -39,8 +42,8 @@ class MenuOptionHandler():
                 "answer": "analize",
                 "result": None,
             }
-            FileAnalizer()
-            pass
+            fileAnalizer = FileAnalizer()
+            fileAnalizer.analize(self.fileToAnalize)
         elif self.option == 3:
             # create new file
             pass
