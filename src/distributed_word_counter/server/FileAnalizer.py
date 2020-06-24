@@ -1,13 +1,26 @@
 from distributed_word_counter.server.DatabaseHandler import DatabaseHandler
 
 
-class FileAnalizer():
+class TextAnalizer():
 
-    def __init__(self):
+    def __init__(self, text):
         super().__init__()
+        self.text = text
 
-    def analize(self, filename):
+    def getWordsCount(self):
+        count = {}
+        for word in self.text.split():
+            if word in count:
+                count[word] += 1
+            else:
+                count[word] = 1
+        return count
+
+    def analize(self, numberOfWords):
         # Analize logic here
-        dbHandler = DatabaseHandler()
-        fileToAnalize = dbHandler.getFile(filename)[0]
-        fileText = fileToAnalize["value"].decode()
+        sortedCount = {k: v for k, v in sorted(
+            self.getWordsCount().items(), key=lambda item: item[1], reverse=True)}
+        for i, j in enumerate(sortedCount.items()):
+            if i >= numberOfWords:
+                break
+            print(i+1, j)

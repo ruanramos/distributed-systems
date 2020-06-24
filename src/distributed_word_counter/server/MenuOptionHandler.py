@@ -1,6 +1,6 @@
 import json
 from distributed_word_counter.server.DatabaseHandler import DatabaseHandler
-from distributed_word_counter.server.FileAnalizer import FileAnalizer
+from distributed_word_counter.server.FileAnalizer import TextAnalizer
 
 
 class MenuOptionHandler():
@@ -9,7 +9,7 @@ class MenuOptionHandler():
         self.option = int(loadedData['option'])
         if loadedData['filename']:
             filename, *fileExtension = loadedData['filename'].split('.')
-            self.fileToAnalize = filename
+            self.filenameToAnalize = filename
         self.clientSocket = clientSocket
         self.clientAddress = clientAddress
 
@@ -42,8 +42,11 @@ class MenuOptionHandler():
                 "answer": "analize",
                 "result": None,
             }
-            fileAnalizer = FileAnalizer()
-            fileAnalizer.analize(self.fileToAnalize)
+            dbHandler = DatabaseHandler()
+            fileToAnalize = dbHandler.getFile(self.filenameToAnalize)[0]
+            analizer = TextAnalizer(fileToAnalize["value"].decode())
+            analizer.analize(20)
+
         elif self.option == 3:
             # create new file
             pass
