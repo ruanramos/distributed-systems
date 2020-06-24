@@ -1,4 +1,5 @@
 import sys
+import json
 from distributed_word_counter.server.counterServerConnection import Connector
 from distributed_word_counter.server.MenuOptionHandler import MenuOptionHandler
 
@@ -13,10 +14,11 @@ if __name__ == "__main__":
     with clientSocket:
         print('Connected by', address)
         # waits for menu option
-        receivedOption = int(str(clientSocket.recv(1024), 'utf8'))
+        receivedObj = clientSocket.recv(1024)
+        loadedData = json.loads(receivedObj)
 
         optionHandler = MenuOptionHandler(
-            receivedOption, clientSocket, address)
+            loadedData, clientSocket, address)
         optionHandler.manageOption()
 
     print(f"Closed Connection to {address}")

@@ -1,12 +1,14 @@
 from distributed_word_counter.server.DatabaseHandler import DatabaseHandler
+from distributed_word_counter.server.FileAnalizer import FileAnalizer
 
 # Here the logic of word counting will happen
 
 
 class MenuOptionHandler():
-    def __init__(self, option, clientSocket, clientAddress):
+    def __init__(self, loadedData, clientSocket, clientAddress):
         super().__init__()
-        self.option = option
+        self.option = int(loadedData['option'])
+        self.fileToAnalize = loadedData['filename']
         self.clientSocket = clientSocket
         self.clientAddress = clientAddress
 
@@ -29,6 +31,7 @@ class MenuOptionHandler():
         elif self.option == 2:
             # choose file to analyze
             answer = ['analize']
+            FileAnalizer()
             pass
         elif self.option == 3:
             # create new file

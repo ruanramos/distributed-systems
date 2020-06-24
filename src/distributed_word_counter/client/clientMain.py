@@ -1,5 +1,6 @@
 import socket
 import sys
+import json
 
 
 def showMenu():
@@ -34,7 +35,15 @@ if __name__ == "__main__":
         # while True:
         showMenu()
         option = getOption()
-        clientSocket.send(bytes(option, 'utf8'))
+        obj = {
+            "option": option,
+            "filename": None,
+        }
+        if option == "2":
+            obj["filename"] = input("What is the name of the file? ")
+
+        serializedObj = json.dumps(obj)
+        clientSocket.send(str.encode(serializedObj))
 
         answer = clientSocket.recv(1024)
         receivedData = str(answer, 'utf8').split("\n")
