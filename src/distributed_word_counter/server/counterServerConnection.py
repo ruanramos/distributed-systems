@@ -26,3 +26,6 @@ class Connector():
                 f"Server is waiting for client connection. Timeout in {self.timeout} seconds")
             serverSocket.settimeout(self.timeout)
             return serverSocket.accept()
+
+    # TODO create a method to send and receive messages, removing
+    # this work from menu handler
