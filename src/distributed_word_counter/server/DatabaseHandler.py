@@ -12,7 +12,7 @@ class DatabaseHandler():
         self.filesPath = "/home/ruan/Codes/distributed-systems/src/distributed_word_counter/files"
 
     def getFile(self, filename):
-        return self.collection.find_one({"name": filename})
+        return self.collection.find({"name": filename}).limit(1)
 
     def getAllFiles(self):
         return self.collection.find()
@@ -37,5 +37,7 @@ class DatabaseHandler():
 
 if __name__ == "__main__":
     a = DatabaseHandler()
-    for f in a.getAllFiles():
-        print(f["value"][:300])
+    for i in a.getFile('test1'):
+        print(i)
+    # for f in a.getAllFiles():
+    # print(f["value"][:300])
