@@ -32,31 +32,31 @@ if __name__ == "__main__":
         clientSocket.connect((HOST, PORT))
         print("\n\nClient connected to server!")
 
-        # while True:
-        showMenu()
-        option = getOption()
-        obj = {
-            "option": option,
-            "filename": None,
-        }
-        if option == "2":
-            obj["filename"] = input("What is the name of the file? ")
+        while True:
+            showMenu()
+            option = getOption()
+            obj = {
+                "option": option,
+                "filename": None,
+            }
+            if option == "2":
+                obj["filename"] = input("What is the name of the file? ")
 
-        serializedObj = json.dumps(obj)
-        clientSocket.send(str.encode(serializedObj))
+            serializedObj = json.dumps(obj)
+            clientSocket.send(str.encode(serializedObj))
 
-        receivedObj = clientSocket.recv(1024)
-        loadedData = json.loads(receivedObj)
-        if loadedData["answer"] == "close":
-            print("Quiting program!")
-            exit(0)
-        elif loadedData["answer"] == "list":
-            print("--------- These are the saved files --------\n\n")
-            for i in loadedData["files"]:
-                print(i)
-            print("\n\n--------------------------------------------\n\n")
-        elif loadedData["answer"] == "analize":
-            # Show analizes info here
-            pass
+            receivedObj = clientSocket.recv(1024)
+            loadedData = json.loads(receivedObj)
+            if loadedData["answer"] == "close":
+                print("Quiting program!")
+                exit(0)
+            elif loadedData["answer"] == "list":
+                print("--------- These are the saved files --------\n\n")
+                for i in loadedData["files"]:
+                    print(i)
+                print("\n\n--------------------------------------------\n\n")
+            elif loadedData["answer"] == "analize":
+                # Show analizes info here
+                print(loadedData["result"])
 
     print("Client is closing connection")
