@@ -18,9 +18,11 @@ class TextAnalizer():
 
     def analize(self, numberOfWords):
         # Analize logic here
+        obj = {}
         sortedCount = {k: v for k, v in sorted(
             self.getWordsCount().items(), key=lambda item: item[1], reverse=True)}
         for i, j in enumerate(sortedCount.items()):
             if i >= numberOfWords:
                 break
-            print(i+1, j)
+            obj[i] = j
+        return obj
