@@ -45,8 +45,10 @@ class MenuOptionHandler():
             dbHandler = DatabaseHandler()
             fileToAnalize = dbHandler.getFile(self.filenameToAnalize)[0]
             analizer = TextAnalizer(fileToAnalize["value"].decode())
-            analizer.analize(20)
-
+            obj["result"] = analizer.analize(20)
+            self.clientSocket.send(str.encode(json.dumps(obj)))
+            print(
+                f"Sent an analise of file {self.filenameToAnalize} to client {self.clientAddress}")
         elif self.option == 3:
             # create new file
             pass
