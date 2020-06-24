@@ -3,7 +3,7 @@ import distributed_word_counter.server.counterServerDbLogic as dbl
 # Here the logic of word counting will happen
 
 
-class OptionHandler():
+class MenuOptionHandler():
     def __init__(self, option, clientSocket):
         super().__init__()
         self.option = option

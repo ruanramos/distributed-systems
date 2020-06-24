@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 
 
-class DatabaseQuerier():
+class DatabaseHandler():
     def __init__(self):
         super().__init__()
         self.client = MongoClient("mongodb://localhost:27017/")
