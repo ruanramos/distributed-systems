@@ -10,7 +10,10 @@ class OptionHandler():
         self.clientSocket = clientSocket
 
     def manageOption(self):
-        if self.option == 1:
+        if self.option == 4:
+            self.clientSocket.send(bytes("close", 'utf8'))
+
+        elif self.option == 1:
             # list all saved files
             dbQuerier = dbl.DatabaseQuerier()
             files = dbQuerier.getAllFiles()
@@ -22,7 +25,4 @@ class OptionHandler():
             pass
         elif self.option == 3:
             # create new file
-            pass
-        else:
-            self.clientSocket.send(bytes("close", 'utf8'))
             pass
