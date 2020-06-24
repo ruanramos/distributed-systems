@@ -37,17 +37,16 @@ if __name__ == "__main__":
         clientSocket.send(bytes(option, 'utf8'))
 
         answer = clientSocket.recv(1024)
-        if str(answer, 'utf8') == "close":
+        receivedData = str(answer, 'utf8').split("\n")
+        if receivedData[0] == "close":
             print("Quiting program!")
             exit(0)
-        else:
-            receivedData = str(answer, 'utf8').split("\n")
-            if receivedData[0] == "list":
-                print("--------- These are the saved files --------\n\n")
-                print(str(answer, 'utf8'))
-                print("\n\n--------------------------------------------\n\n")
-        # result = str(result, 'utf8')
-        # if result == "c":
-        #     break
-        # print("Result: " + result)
+        elif receivedData[0] == "list":
+            print("--------- These are the saved files --------\n\n")
+            print(str(answer, 'utf8'))
+            print("\n\n--------------------------------------------\n\n")
+        elif receivedData[0] == "analize":
+            # Show analizes info here
+            pass
+
     print("Client is closing connection")
