@@ -1,17 +1,15 @@
 from pymongo import MongoClient
 
 
-def getFile(filename):
-    return texts.find_one({"name": filename})
+class DatabaseQuerier():
+    def __init__(self):
+        super().__init__()
+        self.client = MongoClient("mongodb://localhost:27017/")
+        self.db = self.client.test_db
+        self.collection = self.db.texts
 
+    def getFile(self, filename):
+        return self.collection.find_one({"name": filename})
 
-def getAllFiles():
-    return texts.find()
-
-
-if __name__ == "__main__":
-    client = MongoClient('localhost', 27017)
-    db = client.test_db
-    texts = db.texts
-
-    print(getFile("test1"))
+    def getAllFiles(self):
+        return self.collection.find()
