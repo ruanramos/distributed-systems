@@ -1,4 +1,6 @@
 import socket
+from distributed_word_counter.server.MenuOptionHandler import MenuOptionHandler
+import json
 
 # For Server socket, always use this order
 # socket()
@@ -14,18 +16,32 @@ class Connector():
         self.port = port
         self.timeout = timeout
         self.numToListenTo = numToListenTo
+        self.host = socket.gethostbyname(socket.gethostname())
+        self.clientSocket = None
+        self.address = None
 
     def acceptConnections(self):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as serverSocket:
-            self.host = socket.gethostbyname(socket.gethostname())
-            print(self.host, socket.gethostname(),
-                  socket.gethostbyname(socket.gethostname()))
             serverSocket.bind((self.host, self.port))
             serverSocket.listen(self.numToListenTo)
-            print(
-                f"Server is waiting for client connection. Timeout in {self.timeout} seconds")
-            serverSocket.settimeout(self.timeout)
-            return serverSocket.accept()
+
+            while True:
+                print(
+                    f"Server is waiting for client connection. Timeout in {self.timeout} seconds")
+                serverSocket.settimeout(self.timeout)
+                self.clientSocket, self.address = serverSocket.accept()
+                with self.clientSocket:
+                    print('Connected by', self.address)
+                    while True:
+                        # waits for menu option
+                        receivedObj = self.clientSocket.recv(1024)
+                        # unserialize data
+                        loadedData = json.loads(receivedObj)
+                        if not loadedData:
+                            break
+                        optionHandler = MenuOptionHandler(
+                            loadedData, self.clientSocket, self.address)
+                        optionHandler.manageOption()
 
     # TODO create a method to send and receive messages, removing
     # this work from menu handler
