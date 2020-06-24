@@ -1,4 +1,4 @@
-import distributed_word_counter.server.counterServerDbLogic as dbl
+from distributed_word_counter.server.DatabaseHandler import DatabaseHandler
 
 # Here the logic of word counting will happen
 
@@ -15,8 +15,8 @@ class MenuOptionHandler():
 
         elif self.option == 1:
             # list all saved files
-            dbQuerier = dbl.DatabaseQuerier()
-            files = dbQuerier.getAllFiles()
+            dbHandler = DatabaseHandler()
+            files = dbHandler.getAllFiles()
             for f in files:
                 print(f"{f['name']}.{f['extension']}")
             pass

@@ -1,5 +1,4 @@
 import socket
-from distributed_word_counter.server.counterServerLogic import OptionHandler
 
 # For Server socket, always use this order
 # socket()
