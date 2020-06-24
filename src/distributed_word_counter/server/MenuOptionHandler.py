@@ -1,7 +1,6 @@
+import json
 from distributed_word_counter.server.DatabaseHandler import DatabaseHandler
 from distributed_word_counter.server.FileAnalizer import FileAnalizer
-
-# Here the logic of word counting will happen
 
 
 class MenuOptionHandler():
@@ -14,7 +13,12 @@ class MenuOptionHandler():
 
     def manageOption(self):
         if self.option == 4:
-            self.clientSocket.send(bytes("close", 'utf8'))
+            obj = {
+                "answer": "close",
+            }
+            print(
+                f"Client {self.clientAddress} asked for a client side shutdown")
+            self.clientSocket.send(str.encode(json.dumps(obj)))
 
         elif self.option == 1:
             # list all saved files
@@ -22,15 +26,19 @@ class MenuOptionHandler():
                 f"Client {self.clientAddress} asked for a list of saved files")
             dbHandler = DatabaseHandler()
             files = dbHandler.getAllFiles()
-            answer = ["list"]
-            for f in files:
-                answer.append(f"{f['name']}.{f['extension']}")
-            self.clientSocket.send(bytes("\n".join(answer), 'utf8'))
+            obj = {
+                "answer": "list",
+                "files": [f"{f['name']}.{f['extension']}" for f in files],
+            }
+            self.clientSocket.send(str.encode(json.dumps(obj)))
             print(
                 f"Sent a list of saved files to client {self.clientAddress}")
         elif self.option == 2:
             # choose file to analyze
-            answer = ['analize']
+            obj = {
+                "answer": "analize",
+                "result": None,
+            }
             FileAnalizer()
             pass
         elif self.option == 3:

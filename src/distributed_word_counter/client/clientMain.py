@@ -30,7 +30,7 @@ if __name__ == "__main__":
         HOST = socket.gethostbyname(socket.gethostname())
         PORT = int(sys.argv[1])
         clientSocket.connect((HOST, PORT))
-        print("Client connected to server!")
+        print("\n\nClient connected to server!")
 
         # while True:
         showMenu()
@@ -45,16 +45,17 @@ if __name__ == "__main__":
         serializedObj = json.dumps(obj)
         clientSocket.send(str.encode(serializedObj))
 
-        answer = clientSocket.recv(1024)
-        receivedData = str(answer, 'utf8').split("\n")
-        if receivedData[0] == "close":
+        receivedObj = clientSocket.recv(1024)
+        loadedData = json.loads(receivedObj)
+        if loadedData["answer"] == "close":
             print("Quiting program!")
             exit(0)
-        elif receivedData[0] == "list":
+        elif loadedData["answer"] == "list":
             print("--------- These are the saved files --------\n\n")
-            print(str(answer, 'utf8'))
+            for i in loadedData["files"]:
+                print(i)
             print("\n\n--------------------------------------------\n\n")
-        elif receivedData[0] == "analize":
+        elif loadedData["answer"] == "analize":
             # Show analizes info here
             pass
 
