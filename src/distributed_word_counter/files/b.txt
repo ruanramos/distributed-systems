@@ -1,6 +1,0 @@
-
-Esse e o teste do arquivo b.txt
-
-Aqui vou colocar mais linhas para ver o que acontece
-
-bla bla bla bla
