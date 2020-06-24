@@ -4,10 +4,11 @@ from distributed_word_counter.server.DatabaseHandler import DatabaseHandler
 
 
 class MenuOptionHandler():
-    def __init__(self, option, clientSocket):
+    def __init__(self, option, clientSocket, clientAddress):
         super().__init__()
         self.option = option
         self.clientSocket = clientSocket
+        self.clientAddress = clientAddress
 
     def manageOption(self):
         if self.option == 4:
@@ -15,13 +16,16 @@ class MenuOptionHandler():
 
         elif self.option == 1:
             # list all saved files
+            print(
+                f"Client {self.clientAddress} asked for a list of saved files")
             dbHandler = DatabaseHandler()
             files = dbHandler.getAllFiles()
             answer = ["list"]
             for f in files:
                 answer.append(f"{f['name']}.{f['extension']}")
             self.clientSocket.send(bytes("\n".join(answer), 'utf8'))
-            pass
+            print(
+                f"Sent a list of saved files to client {self.clientAddress}")
         elif self.option == 2:
             # choose file to analyze
             answer = ['analize']

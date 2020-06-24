@@ -15,7 +15,8 @@ if __name__ == "__main__":
         # waits for menu option
         receivedOption = int(str(clientSocket.recv(1024), 'utf8'))
 
-        optionHandler = MenuOptionHandler(receivedOption, clientSocket)
+        optionHandler = MenuOptionHandler(
+            receivedOption, clientSocket, address)
         optionHandler.manageOption()
 
     print(f"Closed Connection to {address}")
