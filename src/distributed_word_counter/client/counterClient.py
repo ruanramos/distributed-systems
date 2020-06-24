@@ -1,4 +1,5 @@
 import socket
+import sys
 
 
 def showMenu():
@@ -26,7 +27,7 @@ def getOption():
 if __name__ == "__main__":
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as clientSocket:
         HOST = socket.gethostbyname(socket.gethostname())
-        PORT = 50011
+        PORT = int(sys.argv[1])
         clientSocket.connect((HOST, PORT))
         print("Client connected to server!")
 
