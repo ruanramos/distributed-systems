@@ -48,10 +48,17 @@ class MenuOptionHandler():
                 fileToAnalize = dbHandler.getFileById(
                     int(self.filenameToAnalize))[0]
             except ValueError:
-                fileToAnalize = dbHandler.getFile(self.filenameToAnalize)[0]
+                try:
+                    fileToAnalize = dbHandler.getFile(
+                        self.filenameToAnalize)[0]
+                except IndexError:
+                    obj["result"] = "File not found"
+            except IndexError:
+                obj["result"] = "File not found"
 
-            analizer = TextAnalizer(fileToAnalize["value"].decode())
-            obj["result"] = analizer.analize(20)
+            if not obj["result"]:
+                analizer = TextAnalizer(fileToAnalize["value"].decode())
+                obj["result"] = analizer.analize(20)
             self.clientSocket.send(str.encode(json.dumps(obj)))
             print(
                 f"Sent an analise of file {self.filenameToAnalize} to client {self.clientAddress}")
