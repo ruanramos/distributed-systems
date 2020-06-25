@@ -40,7 +40,8 @@ if __name__ == "__main__":
                 "filename": None,
             }
             if option == "2":
-                obj["filename"] = input("What is the name of the file? ")
+                obj["filename"] = input(
+                    "What is the name of the file or number in the list? ")
 
             serializedObj = json.dumps(obj)
             clientSocket.send(str.encode(serializedObj))
