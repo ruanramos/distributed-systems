@@ -5,6 +5,9 @@ import json
 
 def showMenu():
     print("""
+    You can check the files that are saved and choose one to be analyzed.
+    The analysis will show you the most used words in the file.
+
             1- See saved files
             2- Choose a file to analize
             3- Create a new file
@@ -13,7 +16,10 @@ def showMenu():
 
 
 def validOption(option):
-    return int(option) in range(1, 5)
+    try:
+        return int(option) in range(1, 5)
+    except ValueError:
+        return False
 
 
 def getOption():
@@ -41,7 +47,7 @@ if __name__ == "__main__":
             }
             if option == "2":
                 obj["filename"] = input(
-                    "What is the name of the file or number in the list? ")
+                    "What is the name of the file or number in the saved files list?\nFile: ")
 
             serializedObj = json.dumps(obj)
             clientSocket.send(str.encode(serializedObj))
@@ -58,6 +64,10 @@ if __name__ == "__main__":
                 print("\n\n--------------------------------------------\n\n")
             elif loadedData["answer"] == "analize":
                 # Show analizes info here
-                print(loadedData["result"])
+                try:
+                    for word in loadedData["result"].items():
+                        print(word)
+                except AttributeError:
+                    print(loadedData["result"])
 
     print("Client is closing connection")
