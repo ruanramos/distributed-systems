@@ -27,7 +27,8 @@ class Connector():
 
             while True:
                 print(
-                    f"Server is waiting for client connection. Timeout in {self.timeout} seconds")
+                    f"Server is waiting for client connection. \
+                    Timeout in {self.timeout} seconds")
                 serverSocket.settimeout(self.timeout)
                 self.clientSocket, self.address = serverSocket.accept()
                 with self.clientSocket:
@@ -35,10 +36,11 @@ class Connector():
                     while True:
                         # waits for menu option
                         receivedObj = self.clientSocket.recv(1024)
+                        if not receivedObj:
+                            break
                         # unserialize data
                         loadedData = json.loads(receivedObj)
-                        if not loadedData:
-                            break
+
                         optionHandler = MenuOptionHandler(
                             loadedData, self.clientSocket, self.address)
                         optionHandler.manageOption()
