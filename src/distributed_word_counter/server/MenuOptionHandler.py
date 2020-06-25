@@ -8,8 +8,9 @@ class MenuOptionHandler():
         super().__init__()
         self.option = int(loadedData['option'])
         if loadedData['filename']:
-            filename, *fileExtension = loadedData['filename'].split('.')
-            self.filenameToAnalize = filename
+            receivedFilename, * \
+                fileExtension = loadedData['filename'].split('.')
+            self.filenameToAnalize = receivedFilename
         self.clientSocket = clientSocket
         self.clientAddress = clientAddress
 
@@ -31,7 +32,7 @@ class MenuOptionHandler():
             files = dbHandler.getAllFiles()
             obj = {
                 "answer": "list",
-                "files": [f"{f['name']}.{f['extension']}" for f in files],
+                "files": [f"{f['_id']} - {f['name']}.{f['extension']}" for f in files],
             }
             self.clientSocket.send(str.encode(json.dumps(obj)))
             print(
@@ -43,7 +44,12 @@ class MenuOptionHandler():
                 "result": None,
             }
             dbHandler = DatabaseHandler()
-            fileToAnalize = dbHandler.getFile(self.filenameToAnalize)[0]
+            try:
+                fileToAnalize = dbHandler.getFileById(
+                    int(self.filenameToAnalize))[0]
+            except ValueError:
+                fileToAnalize = dbHandler.getFile(self.filenameToAnalize)[0]
+
             analizer = TextAnalizer(fileToAnalize["value"].decode())
             obj["result"] = analizer.analize(20)
             self.clientSocket.send(str.encode(json.dumps(obj)))
