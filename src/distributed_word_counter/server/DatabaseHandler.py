@@ -43,4 +43,5 @@ if __name__ == "__main__":
     a = DatabaseHandler()
     # for f in a.getAllFiles():
     # print(f["value"][:300])
-    # a.saveAllFiles()
+    a.collection.drop()
+    a.saveAllFiles()
