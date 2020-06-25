@@ -14,18 +14,22 @@ class DatabaseHandler():
     def getFile(self, filename):
         return self.collection.find({"name": filename}).limit(1)
 
+    def getFileById(self, fileId):
+        return self.collection.find({"_id": fileId}).limit(1)
+
     def getAllFiles(self):
         return self.collection.find()
 
     def saveAllFiles(self):
         # Save all files from the files folder to mongodb
         # texts collection on test_db
-        for entry in os.scandir(self.filesPath):
+        for i, entry in enumerate(os.scandir(self.filesPath)):
             if entry.path.endswith(".txt") and entry.is_file():
                 with open(entry.path, 'r') as f:
                     fullName = f.name.split('/')[-1].split('.')
                     self.collection.insert(
                         {
+                            "_id": i,
                             "name": fullName[0],
                             "extension": fullName[1],
                             "value": bytes(f.read(), 'utf8')
@@ -37,7 +41,6 @@ class DatabaseHandler():
 
 if __name__ == "__main__":
     a = DatabaseHandler()
-    for i in a.getFile('test1'):
-        print(i)
     # for f in a.getAllFiles():
     # print(f["value"][:300])
+    # a.saveAllFiles()
