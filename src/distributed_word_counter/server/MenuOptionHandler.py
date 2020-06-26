@@ -7,6 +7,7 @@ class MenuOptionHandler():
     def __init__(self, loadedData, clientSocket, clientAddress):
         super().__init__()
         self.option = int(loadedData['option'])
+        self.numToAnalize = int(loadedData['numToAnalize'])
         if loadedData['filename']:
             receivedFilename, * \
                 fileExtension = loadedData['filename'].split('.')
@@ -58,7 +59,7 @@ class MenuOptionHandler():
 
             if not obj["result"]:
                 analizer = TextAnalizer(fileToAnalize["value"].decode())
-                obj["result"] = analizer.analize(20)
+                obj["result"] = analizer.analize(self.numToAnalize)
             self.clientSocket.send(str.encode(json.dumps(obj)))
             print(
                 f"Sent an analise of file {self.filenameToAnalize} to client {self.clientAddress}")
