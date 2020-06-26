@@ -8,9 +8,11 @@ class MenuOptionHandler():
         super().__init__()
         self.option = int(loadedData['option'])
         self.numToAnalize = int(loadedData['numToAnalize'])
-        if loadedData['filename']:
+        try:
             receivedFilename, * \
                 fileExtension = loadedData['filename'].split('.')
+        except (UnboundLocalError, AttributeError):
+            receivedFilename = ""
         self.filenameToAnalize = receivedFilename
         self.clientSocket = clientSocket
         self.clientAddress = clientAddress
