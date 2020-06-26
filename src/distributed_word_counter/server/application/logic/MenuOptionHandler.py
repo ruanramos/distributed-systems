@@ -3,36 +3,14 @@ from database.DatabaseHandler import DatabaseHandler
 from logic.FileAnalizer import TextAnalizer
 
 
-class MessageComposer():
-
-    def composeMessage(self, *pairs, **opts):
-        message = {}
-        for pair in pairs:
-            message[pair[0]] = pair[1]
-        for key, value in opts.items():
-            if key == "encode" and value:
-                return self.encodeObject(message)
-        return message
-
-    def updateMessage(self, previousMessage, *pairs, **opts):
-        for pair in pairs:
-            previousMessage[pair[0]] = pair[1]
-        for key, value in opts.items():
-            if key == "encode" and value:
-                return self.encodeObject(previousMessage)
-        return previousMessage
-
-    def encodeObject(self, obj):
-        return str.encode(json.dumps(obj))
-
-
 class FileNotFoundError(Exception):
     def __init__(self, message):
         self.message = message
 
 
 class MenuOptionHandler():
-    def __init__(self, loadedData, clientSocket, clientAddress):
+    def __init__(self, loadedData, clientSocket,
+                 clientAddress, messageComposer):
         super().__init__()
         self.option = int(loadedData['option'])
         self.numToAnalize = int(loadedData['numToAnalize'])
@@ -44,7 +22,7 @@ class MenuOptionHandler():
         self.filenameToAnalize = receivedFilename
         self.clientSocket = clientSocket
         self.clientAddress = clientAddress
-        self.messageComposer = MessageComposer()
+        self.messageComposer = messageComposer
 
     def errorMessage(self, message):
         return self.messageComposer.updateMessage(
@@ -58,7 +36,8 @@ class MenuOptionHandler():
             print(
                 f"Client {self.clientAddress} asked for a client side shutdown")
             self.clientSocket.send(
-                self.messageComposer.composeMessage(("answer", "close"), encode=True))
+                self.messageComposer.composeMessage(("answer", "close"),
+                                                    encode=True))
 
         elif self.option == 1:
             # list all saved files
@@ -115,7 +94,7 @@ class MenuOptionHandler():
                 message["result"] = analizer.analize(self.numToAnalize)
             self.clientSocket.send(str.encode(json.dumps(message)))
             print(
-                f"Sent an analysis of file {self.filenameToAnalize} to client {self.clientAddress}")
+                f"Sent an analysis of file \"{fileToAnalize['name']}\" to client {self.clientAddress}")
         elif self.option == 3:
             # create new file
             pass
