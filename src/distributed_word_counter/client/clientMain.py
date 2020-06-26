@@ -56,7 +56,6 @@ if __name__ == "__main__":
 
             # object can be big depending on number of words!
             receivedObj = clientSocket.recv(50000)
-            print(receivedObj)
             loadedData = json.loads(receivedObj)
             if loadedData["answer"] == "close":
                 print("Quiting program!")
@@ -69,8 +68,16 @@ if __name__ == "__main__":
             elif loadedData["answer"] == "analize":
                 # Show analizes info here
                 try:
-                    for word in loadedData["result"].items():
-                        print(word)
+                    print(
+                        f"\n\nResult of the analysis of file {loadedData['filename']}:\n")
+                    print("\n--------------------------------------------\n\n")
+                    for entry in loadedData["result"].items():
+                        word = entry[1][0].upper()
+                        numOfTimes = entry[1][1]
+                        index = int(entry[0]) + 1
+                        print(
+                            f"{index} - {word} was used a total of {numOfTimes}")
+                    print("\n\n--------------------------------------------\n\n")
                 except AttributeError:
                     print(loadedData["result"])
 

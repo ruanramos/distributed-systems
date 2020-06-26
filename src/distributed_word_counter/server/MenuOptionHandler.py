@@ -50,9 +50,8 @@ class MenuOptionHandler():
             try:
                 fileToAnalize = dbHandler.getFileById(
                     int(self.filenameToAnalize))[0]
-                print(fileToAnalize)
                 obj["filename"] = fileToAnalize["name"] + \
-                    fileToAnalize["extension"]
+                    "." + fileToAnalize["extension"]
             except ValueError:
                 # Check for the file name
                 try:
