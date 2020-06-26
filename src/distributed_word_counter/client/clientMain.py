@@ -44,15 +44,19 @@ if __name__ == "__main__":
             obj = {
                 "option": option,
                 "filename": None,
+                "numToAnalize": 10,
             }
             if option == "2":
                 obj["filename"] = input(
                     "What is the name of the file or number in the saved files list?\nFile: ")
-
+                numToAnalize = input("How many words?\nNumber of Words: ")
+                obj["numToAnalize"] = numToAnalize if numToAnalize.isnumeric() else 10
             serializedObj = json.dumps(obj)
             clientSocket.send(str.encode(serializedObj))
 
-            receivedObj = clientSocket.recv(1024)
+            # object can be big depending on number of words!
+            receivedObj = clientSocket.recv(50000)
+            print(receivedObj)
             loadedData = json.loads(receivedObj)
             if loadedData["answer"] == "close":
                 print("Quiting program!")
