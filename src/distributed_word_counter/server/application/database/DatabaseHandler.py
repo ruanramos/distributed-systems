@@ -9,7 +9,7 @@ class DatabaseHandler():
         # Database name and collection name being hardcoded for now
         self.db = self.client.test_db
         self.collection = self.db.texts
-        self.filesPath = "/home/ruan/Codes/distributed-systems/src/distributed_word_counter/files"
+        self.filesPath = "/home/ruan/Codes/distributed-systems/src/distributed_word_counter/server/files"
 
     def getFile(self, filename):
         return self.collection.find({"name": filename}).limit(1)
