@@ -2,14 +2,8 @@ import socket
 from logic.MenuOptionHandler import MenuOptionHandler
 import json
 
-# For Server socket, always use this order
-# socket()
-# bind()
-# listen()
-# accept() -> can loop
 
-
-class Connector():
+class ServerConnector():
     def __init__(self, host, port, numToListenTo=1, timeout=0):
         super().__init__()
         self.host = host

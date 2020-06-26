@@ -1,5 +1,5 @@
 import sys
-from connection.counterServerConnection import Connector
+from connection.ServerConnector import ServerConnector
 
 
 if __name__ == "__main__":
@@ -7,6 +7,6 @@ if __name__ == "__main__":
     PORT = int(sys.argv[1])
     CON_TIMEOUT = 15
     LISTEN_BACKLOG = 5
-    connector = Connector(HOST, PORT, LISTEN_BACKLOG, CON_TIMEOUT)
+    connector = ServerConnector(HOST, PORT, LISTEN_BACKLOG, CON_TIMEOUT)
     connector.acceptConnections()
     print(f"Closed Connection to {connector.address}")
