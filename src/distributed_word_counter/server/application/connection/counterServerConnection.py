@@ -1,5 +1,5 @@
 import socket
-from MenuOptionHandler import MenuOptionHandler
+from logic.MenuOptionHandler import MenuOptionHandler
 import json
 
 # For Server socket, always use this order

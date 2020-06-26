@@ -1,6 +1,6 @@
 import json
-from DatabaseHandler import DatabaseHandler
-from FileAnalizer import TextAnalizer
+from database.DatabaseHandler import DatabaseHandler
+from logic.FileAnalizer import TextAnalizer
 
 
 class MenuOptionHandler():

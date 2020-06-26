@@ -1,5 +1,5 @@
 import sys
-from counterServerConnection import Connector
+from connection.counterServerConnection import Connector
 
 
 if __name__ == "__main__":
