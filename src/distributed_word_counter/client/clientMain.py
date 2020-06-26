@@ -40,46 +40,49 @@ if __name__ == "__main__":
 
         while True:
             showMenu()
-            option = getOption()
-            obj = {
-                "option": option,
-                "filename": None,
-                "numToAnalize": 10,
-            }
-            if option == "2":
-                obj["filename"] = input(
-                    "What is the name of the file or number in the saved files list?\nFile: ")
-                numToAnalize = input(
-                    "How many words? (leave blank for 10)\nNumber of Words: ")
-                obj["numToAnalize"] = numToAnalize if numToAnalize.isnumeric() else 10
-            serializedObj = json.dumps(obj)
-            clientSocket.send(str.encode(serializedObj))
+            try:
+                option = getOption()
+                obj = {
+                    "option": option,
+                    "filename": None,
+                    "numToAnalize": 10,
+                }
+                if option == "2":
+                    obj["filename"] = input(
+                        "What is the name of the file or number in the saved files list?\nFile: ")
+                    numToAnalize = input(
+                        "How many words? (leave blank for 10)\nNumber of Words: ")
+                    obj["numToAnalize"] = numToAnalize if numToAnalize.isnumeric() else 10
+                serializedObj = json.dumps(obj)
+                clientSocket.send(str.encode(serializedObj))
 
-            # object can be big depending on number of words!
-            receivedObj = clientSocket.recv(50000)
-            loadedData = json.loads(receivedObj)
-            if loadedData["answer"] == "close":
-                print("Quiting program!")
-                exit(0)
-            elif loadedData["answer"] == "list":
-                print("--------- These are the saved files --------\n\n")
-                for i in loadedData["files"]:
-                    print(i)
-                print("\n\n--------------------------------------------\n\n")
-            elif loadedData["answer"] == "analize":
-                # Show analizes info here
-                try:
-                    print(
-                        f"\n\nResult of the analysis of file {loadedData['filename']}:\n")
-                    print("\n--------------------------------------------\n\n")
-                    for entry in loadedData["result"].items():
-                        word = entry[1][0].upper()
-                        numOfTimes = entry[1][1]
-                        index = int(entry[0]) + 1
-                        print(
-                            f"{index} - {word} was used a total of {numOfTimes}")
+                # object can be big depending on number of words!
+                receivedObj = clientSocket.recv(50000)
+                loadedData = json.loads(receivedObj)
+                if loadedData["answer"] == "close":
+                    print("Quiting program!")
+                    exit(0)
+                elif loadedData["answer"] == "list":
+                    print("--------- These are the saved files --------\n\n")
+                    for i in loadedData["files"]:
+                        print(i)
                     print("\n\n--------------------------------------------\n\n")
-                except AttributeError:
-                    print(loadedData["result"])
+                elif loadedData["answer"] == "analize":
+                    # Show analizes info here
+                    try:
+                        print(
+                            f"\n\nResult of the analysis of file {loadedData['filename']}:\n")
+                        print("\n--------------------------------------------\n\n")
+                        for entry in loadedData["result"].items():
+                            word = entry[1][0].upper()
+                            numOfTimes = entry[1][1]
+                            index = int(entry[0]) + 1
+                            print(
+                                f"{index} - {word} was used a total of {numOfTimes}")
+                        print("\n\n--------------------------------------------\n\n")
+                    except AttributeError:
+                        print(loadedData["result"])
+            except Exception:
+                raise Exception("Lost connection to server. Shutting down")
 
     print("Client is closing connection")
