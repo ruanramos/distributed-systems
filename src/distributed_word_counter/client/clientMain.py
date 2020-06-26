@@ -63,24 +63,25 @@ if __name__ == "__main__":
                     print("Quiting program!")
                     exit(0)
                 elif loadedData["answer"] == "list":
-                    print("--------- These are the saved files --------\n\n")
+                    print("--------- These are the saved files --------\n")
                     for i in loadedData["files"]:
                         print(i)
-                    print("\n\n--------------------------------------------\n\n")
+                    print("\n--------------------------------------------\n")
                 elif loadedData["answer"] == "analize":
                     # Show analizes info here
                     try:
-                        print("\n--------------------------------------------\n\n")
+                        print("\n--------------------------------------------\n")
                         print(
-                            f"Result of the analysis for file \"{loadedData['filename']}\": \n")
+                            f"  Result of the analysis for file \"{loadedData['filename']}\": \n")
                         if loadedData['result'] != "File not found":
-                            print(f"{obj['numToAnalize']} most used words:\n")
+                            print(
+                                f"  {obj['numToAnalize']} most used words:\n")
                         for entry in loadedData["result"].items():
                             word = entry[1][0].upper()
                             numOfTimes = entry[1][1]
                             index = int(entry[0]) + 1
                             print(
-                                f"{index} - \"{word}\" --> {numOfTimes} times")
+                                f"  {index} - \"{word}\" --> {numOfTimes} times")
                         print("\n\n--------------------------------------------")
                     except AttributeError:
                         print(loadedData["result"])
