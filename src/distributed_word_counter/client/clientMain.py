@@ -70,16 +70,18 @@ if __name__ == "__main__":
                 elif loadedData["answer"] == "analize":
                     # Show analizes info here
                     try:
-                        print(
-                            f"\n\nResult of the analysis of file {loadedData['filename']}:\n")
                         print("\n--------------------------------------------\n\n")
+                        print(
+                            f"Result of the analysis for file \"{loadedData['filename']}\": \n")
+                        if loadedData['result'] != "File not found":
+                            print(f"{obj['numToAnalize']} most used words:\n")
                         for entry in loadedData["result"].items():
                             word = entry[1][0].upper()
                             numOfTimes = entry[1][1]
                             index = int(entry[0]) + 1
                             print(
-                                f"{index} - {word} was used a total of {numOfTimes} times")
-                        print("\n\n--------------------------------------------\n\n")
+                                f"{index} - \"{word}\" --> {numOfTimes} times")
+                        print("\n\n--------------------------------------------")
                     except AttributeError:
                         print(loadedData["result"])
             except Exception:
