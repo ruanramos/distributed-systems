@@ -11,7 +11,7 @@ class MenuOptionHandler():
         if loadedData['filename']:
             receivedFilename, * \
                 fileExtension = loadedData['filename'].split('.')
-            self.filenameToAnalize = receivedFilename
+        self.filenameToAnalize = receivedFilename
         self.clientSocket = clientSocket
         self.clientAddress = clientAddress
 
@@ -43,19 +43,28 @@ class MenuOptionHandler():
             obj = {
                 "answer": "analize",
                 "result": None,
+                "filename": self.filenameToAnalize,
             }
             dbHandler = DatabaseHandler()
+            # Check for the number from list
             try:
                 fileToAnalize = dbHandler.getFileById(
                     int(self.filenameToAnalize))[0]
+                print(fileToAnalize)
+                obj["filename"] = fileToAnalize["name"] + \
+                    fileToAnalize["extension"]
             except ValueError:
+                # Check for the file name
                 try:
                     fileToAnalize = dbHandler.getFile(
                         self.filenameToAnalize)[0]
+                    obj["filename"] = fileToAnalize
                 except IndexError:
                     obj["result"] = "File not found"
+                    obj["filename"] = self.filenameToAnalize
             except IndexError:
                 obj["result"] = "File not found"
+                obj["filename"] = self.filenameToAnalize
 
             if not obj["result"]:
                 analizer = TextAnalizer(fileToAnalize["value"].decode())
