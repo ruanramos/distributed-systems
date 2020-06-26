@@ -78,7 +78,7 @@ if __name__ == "__main__":
                             numOfTimes = entry[1][1]
                             index = int(entry[0]) + 1
                             print(
-                                f"{index} - {word} was used a total of {numOfTimes}")
+                                f"{index} - {word} was used a total of {numOfTimes} times")
                         print("\n\n--------------------------------------------\n\n")
                     except AttributeError:
                         print(loadedData["result"])
