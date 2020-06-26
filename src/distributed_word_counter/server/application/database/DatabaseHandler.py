@@ -1,5 +1,12 @@
 from pymongo import MongoClient
 import os
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s %(message)s',
+    datefmt='%m/%d/%Y %I:%M:%S %p'
+)
 
 
 class DatabaseHandler():
@@ -35,7 +42,7 @@ class DatabaseHandler():
                             "value": bytes(f.read(), 'utf8')
                         }
                     )
-                    print(f'Ok to file {f}')
+                    logging.info(f'Ok to file {f}')
         return
 
 

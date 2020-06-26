@@ -1,6 +1,13 @@
 import socket
 import sys
 import json
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s %(message)s',
+    datefmt='%m/%d/%Y %I:%M:%S %p'
+)
 
 
 def showMenu():
@@ -36,7 +43,7 @@ if __name__ == "__main__":
         HOST = socket.gethostbyname(socket.gethostname())
         PORT = int(sys.argv[1])
         clientSocket.connect((HOST, PORT))
-        print("\n\nClient connected to server!")
+        logging.info("\n\nClient connected to server!")
 
         while True:
             showMenu()
@@ -60,7 +67,7 @@ if __name__ == "__main__":
                 receivedObj = clientSocket.recv(50000)
                 loadedData = json.loads(receivedObj)
                 if loadedData["answer"] == "close":
-                    print("Quiting program!")
+                    logging.info("Quiting program!")
                     exit(0)
                 elif loadedData["answer"] == "list":
                     print("--------- These are the saved files --------\n")
@@ -88,4 +95,4 @@ if __name__ == "__main__":
             except Exception:
                 raise Exception("Lost connection to server. Shutting down")
 
-    print("Client is closing connection")
+    logging.info("Client is closing connection")

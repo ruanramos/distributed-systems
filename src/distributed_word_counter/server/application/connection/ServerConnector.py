@@ -1,6 +1,13 @@
 import socket
+import logging
 from logic.MenuOptionHandler import MenuOptionHandler
 import json
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s %(message)s',
+    datefmt='%m/%d/%Y %I:%M:%S %p'
+)
 
 
 class ServerConnector():
@@ -20,40 +27,39 @@ class ServerConnector():
             serverSocket.listen(self.numToListenTo)
 
             while True:
-                print(
-                    f"Server is waiting for client connection. \
-                    Timeout in {self.timeout} seconds")
+                logging.info(
+                    f"Server is waiting for client connection. Timeout in {self.timeout} seconds")
                 serverSocket.settimeout(self.timeout)
                 self.clientSocket, self.address = serverSocket.accept()
                 with self.clientSocket:
-                    print('Connected by', self.address)
-                    self.executionLoop()
-                print("Lost connection to client")
+                    logging.info(f"Connected by {self.address}")
+                    self.connectionLoop()
+                logging.info("Lost connection to client")
 
-    def executionLoop(self):
+    def connectionLoop(self):
         while True:
             # waits for menu option
             receivedObj = self.clientSocket.recv(1024)
             if not receivedObj:
                 break
             # unserialize data
-            messageComposer = self.MessageComposer()
+            messageComposer = self.MessageHandler()
             optionHandler = MenuOptionHandler(
-                messageComposer.decodeObject(receivedObj),
+                messageComposer.decode(receivedObj),
                 self.clientSocket,
                 self.address,
                 messageComposer,
             )
             optionHandler.manageOption()
 
-    class MessageComposer():
+    class MessageHandler():
         def composeMessage(self, *pairs, **opts):
             message = {}
             for pair in pairs:
                 message[pair[0]] = pair[1]
             for key, value in opts.items():
                 if key == "encode" and value:
-                    return self.encodeObject(message)
+                    return self.encode(message)
             return message
 
         def updateMessage(self, previousMessage, *pairs, **opts):
@@ -61,11 +67,14 @@ class ServerConnector():
                 previousMessage[pair[0]] = pair[1]
             for key, value in opts.items():
                 if key == "encode" and value:
-                    return self.encodeObject(previousMessage)
+                    return self.encode(previousMessage)
             return previousMessage
 
-        def encodeObject(self, obj):
+        def encode(self, obj):
             return str.encode(json.dumps(obj))
 
-        def decodeObject(self, obj):
+        def decode(self, obj):
             return json.loads(obj)
+
+        def sendMessage(self, message, clientSocket):
+            clientSocket.send(message)

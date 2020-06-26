@@ -1,5 +1,12 @@
 import sys
 from connection.ServerConnector import ServerConnector
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s %(message)s',
+    datefmt='%m/%d/%Y %I:%M:%S %p'
+)
 
 
 if __name__ == "__main__":
@@ -9,4 +16,4 @@ if __name__ == "__main__":
     LISTEN_BACKLOG = 5
     connector = ServerConnector(HOST, PORT, LISTEN_BACKLOG, CON_TIMEOUT)
     connector.acceptConnections()
-    print(f"Closed Connection to {connector.address}")
+    logging.info(f"Closed Connection to {connector.address}")
