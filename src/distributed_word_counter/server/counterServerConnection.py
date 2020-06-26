@@ -1,5 +1,5 @@
 import socket
-from distributed_word_counter.server.MenuOptionHandler import MenuOptionHandler
+from MenuOptionHandler import MenuOptionHandler
 import json
 
 # For Server socket, always use this order

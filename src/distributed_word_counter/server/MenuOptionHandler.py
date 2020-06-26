@@ -1,6 +1,6 @@
 import json
-from distributed_word_counter.server.DatabaseHandler import DatabaseHandler
-from distributed_word_counter.server.FileAnalizer import TextAnalizer
+from DatabaseHandler import DatabaseHandler
+from FileAnalizer import TextAnalizer
 
 
 class MenuOptionHandler():
