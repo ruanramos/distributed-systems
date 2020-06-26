@@ -1,6 +1,3 @@
-from distributed_word_counter.server.DatabaseHandler import DatabaseHandler
-
-
 class TextAnalizer():
 
     def __init__(self, text):
