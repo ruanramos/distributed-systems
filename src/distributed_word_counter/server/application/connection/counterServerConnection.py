@@ -44,6 +44,7 @@ class Connector():
                         optionHandler = MenuOptionHandler(
                             loadedData, self.clientSocket, self.address)
                         optionHandler.manageOption()
+                print("Lost connection to client")
 
     # TODO create a method to send and receive messages, removing
     # this work from menu handler
