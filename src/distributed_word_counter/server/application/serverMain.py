@@ -1,6 +1,6 @@
+import logging
 import sys
 from connection.ServerConnector import ServerConnector
-import logging
 
 
 if __name__ == "__main__":
