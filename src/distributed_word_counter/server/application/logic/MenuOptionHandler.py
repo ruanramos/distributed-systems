@@ -75,7 +75,11 @@ class MenuOptionHandler():
                 fileToAnalize = dbHandler.getFile(
                     self.filenameToAnalize)[0]
                 self.messageComposer.updateMessage(
-                    message, ("filename", fileToAnalize)
+                    message,
+                    (
+                        "filename",
+                        f"{fileToAnalize['name']}.{fileToAnalize['extension']}"
+                    )
                 )
             except IndexError:
                 self.sendErrorMessage(message)
@@ -89,10 +93,10 @@ class MenuOptionHandler():
         self.clientSocket.send(str.encode(json.dumps(message)))
         try:
             logging.info(
-                f"Sent an analysis of file \"{fileToAnalize['name']}\" to client {self.clientAddress}")
-        except Exception:
+                f"Sent an analysis of file \"{fileToAnalize['name']}.{fileToAnalize['extension']}\" to client {self.clientAddress}")
+        except Exception as e:
             logging.warning(
-                f"File not found. Sent an error message to client {self.clientAddress}")
+                f"{e}\nFile not found. Sent an error message to client {self.clientAddress}")
 
     def manageOption(self):
         if self.option == 4:

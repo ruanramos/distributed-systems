@@ -19,7 +19,14 @@ class DatabaseHandler():
         self.filesPath = "/home/ruan/Codes/distributed-systems/src/distributed_word_counter/server/files"
 
     def getFile(self, filename):
-        return self.collection.find({"name": filename}).limit(1)
+        return self.collection.find(
+            {
+                "name":
+                {
+                    "$regex": "^" + filename.lower() + "$", "$options": 'i'
+                }
+            }
+        ).limit(1)
 
     def getFileById(self, fileId):
         return self.collection.find({"_id": fileId}).limit(1)
