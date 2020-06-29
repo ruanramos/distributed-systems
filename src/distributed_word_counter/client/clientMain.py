@@ -30,7 +30,7 @@ def validOption(option):
 
 
 def getOption():
-    option = input()
+    option = input("Option: ")
     while not validOption(option):
         print("Invalid option. Please choose a valid option")
         showMenu()
