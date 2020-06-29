@@ -32,6 +32,15 @@ def getOption():
     return option
 
 
+def calculateSpaces():
+    spaces = [0, 0]
+    spaces[0] = 5 - len(entry[0])
+    spaces[1] = 10 - len(word)
+    if index == 10 or index == 100 or index == 1000:
+        spaces[0] -= 1
+    return spaces
+
+
 if __name__ == "__main__":
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as clientSocket:
         HOST = socket.gethostbyname(socket.gethostname())
@@ -81,8 +90,10 @@ if __name__ == "__main__":
                             word = entry[1][0].upper()
                             numOfTimes = entry[1][1]
                             index = int(entry[0]) + 1
+
+                            spaces = calculateSpaces()
                             print(
-                                f"  {index} - \"{word}\" --> {numOfTimes} times")
+                                f"  {index}{spaces[0] * ' '} - \"{word}\"{spaces[1] * ' '} -->   {numOfTimes} times")
                         print("\n\n--------------------------------------------")
                     except AttributeError:
                         print(loadedData["result"])
