@@ -2,12 +2,6 @@ from pymongo import MongoClient
 import os
 import logging
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s %(message)s',
-    datefmt='%m/%d/%Y %I:%M:%S %p'
-)
-
 
 class DatabaseHandler():
     def __init__(self):

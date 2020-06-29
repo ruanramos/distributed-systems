@@ -3,12 +3,6 @@ import logging
 from logic.MenuOptionHandler import MenuOptionHandler
 import json
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s %(message)s',
-    datefmt='%m/%d/%Y %I:%M:%S %p'
-)
-
 
 class ServerConnector():
     def __init__(self, host, port, numToListenTo=1, timeout=0):

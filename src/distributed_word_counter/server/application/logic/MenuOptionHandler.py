@@ -3,12 +3,6 @@ import logging
 from database.DatabaseHandler import DatabaseHandler
 from logic.FileAnalizer import TextAnalizer
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s %(message)s',
-    datefmt='%m/%d/%Y %I:%M:%S %p'
-)
-
 
 class MenuOptionHandler():
 
