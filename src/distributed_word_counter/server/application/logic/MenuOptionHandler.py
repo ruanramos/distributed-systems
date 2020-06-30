@@ -9,6 +9,11 @@ class MenuOptionHandler():
     def __init__(self, loadedData, clientSocket,
                  clientAddress, messageComposer):
         super().__init__()
+        logging.info(
+            (
+                f"Received message from client {clientAddress}"
+                f"\nMessage: {loadedData}"
+            ))
         self.option = int(loadedData['option'])
         self.numToAnalize = int(loadedData['numToAnalize'])
         try:
@@ -20,7 +25,7 @@ class MenuOptionHandler():
         self.clientAddress = clientAddress
         self.messageComposer = messageComposer
 
-    def sendErrorMessage(self, message):
+    def sendErrorMessageToClient(self, message):
         return self.messageComposer.updateMessage(
             message,
             ("filename", self.filenameToAnalize),
@@ -40,7 +45,8 @@ class MenuOptionHandler():
             self.messageComposer.composeMessage(
                 ("answer", "list"),
                 ("files",
-                 [f"{f['_id']} - {f['name']}.{f['extension']}" for f in DatabaseHandler().getAllFiles()]),
+                 [f"{f['_id']} - {f['name']}.{f['extension']}" for f in
+                  DatabaseHandler().getAllFiles()]),
                 encode=True
             )
         )
@@ -76,9 +82,9 @@ class MenuOptionHandler():
                     )
                 )
             except IndexError:
-                self.sendErrorMessage(message)
+                self.sendErrorMessageToClient(message)
         except IndexError:
-            self.sendErrorMessage(message)
+            self.sendErrorMessageToClient(message)
         # Got file, will analyze
         if not message["result"]:
             analizer = TextAnalizer(fileToAnalize["value"].decode())
@@ -87,10 +93,17 @@ class MenuOptionHandler():
         self.clientSocket.send(str.encode(json.dumps(message)))
         try:
             logging.info(
-                f"Sent an analysis of file \"{fileToAnalize['name']}.{fileToAnalize['extension']}\" to client {self.clientAddress}")
+                (
+                    f"Sent an analysis of file \"{fileToAnalize['name']}."
+                    f"{fileToAnalize['extension']}\" to client "
+                    f"{self.clientAddress}"
+                ))
         except Exception as e:
             logging.warning(
-                f"{e}\nFile not found. Sent an error message to client {self.clientAddress}")
+                (
+                    f"{e}\nFile not found. Sent an error message to client"
+                    f" {self.clientAddress}"
+                ))
 
     def manageOption(self):
         if self.option == 4:
