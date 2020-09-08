@@ -7,8 +7,10 @@ from InputHandler import InputHandler
 
 
 class ClientConnector():
+    """This class makes the connection of the client to the server"""
     @classmethod
     def tryConnection(cls):
+        """Client try to start a connection"""
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as clientSocket:
             HOST = socket.gethostbyname(socket.gethostname())
             PORT = int(sys.argv[1])
@@ -18,6 +20,16 @@ class ClientConnector():
 
     @classmethod
     def connectionLoop(cls, clientSocket):
+        """Create the loop that handles the connection and communication after
+         connection is established
+
+        Parameters:
+        argument1 (socket): The cliente socket
+
+        Returns:
+        void
+
+        """
         while True:
             ClientScreenPrinter.showMenu()
             try:
@@ -36,6 +48,7 @@ class ClientConnector():
                 serializedObj = json.dumps(obj)
                 clientSocket.send(str.encode(serializedObj))
 
+                # ---- receiving response ------
                 # object can be big depending on number of words!
                 receivedObj = clientSocket.recv(50000)
                 loadedData = json.loads(receivedObj)

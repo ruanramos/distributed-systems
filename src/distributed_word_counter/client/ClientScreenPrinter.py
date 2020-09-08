@@ -14,6 +14,7 @@ class ClientScreenPrinter():
 
     @classmethod
     def calculateSpaces(cls, word, index, entry):
+        # Makes the spaces calculations to format client screen printing
         spaces = [0, 0]
         spaces[0] = 4 - len(entry[0])
         spaces[1] = 10 - len(word)
