@@ -29,3 +29,31 @@ class InputHandler():
             ClientScreenPrinter.showMenu()
             option = input()
         return option
+
+    @classmethod
+    def handleOption(cls, option):
+        """Handles option chosen by the user on client side and returns an object
+        with relevant data to be sent to the server
+
+        Parameters:
+        argument1 (int): The chosen option
+
+        Returns:
+        dict:object containing the request message values
+
+        """
+
+        messageObject = {
+            "option": option,
+            "filename": None,
+            "numToAnalize": 10,
+        }
+        if option == "2":
+            messageObject["filename"] = input(
+                "What is the name of the file or number in the saved files list?\nFile: ")
+            numToAnalize = input(
+                "How many words? (leave blank for 10)\nNumber of Words: ")
+            messageObject["numToAnalize"] = numToAnalize if numToAnalize.isnumeric(
+            ) else 10
+
+        return messageObject

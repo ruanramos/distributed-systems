@@ -33,20 +33,16 @@ class ClientConnector():
         while True:
             ClientScreenPrinter.showMenu()
             try:
-                option = InputHandler.getOption()
-                obj = {
-                    "option": option,
-                    "filename": None,
-                    "numToAnalize": 10,
-                }
-                if option == "2":
-                    obj["filename"] = input(
-                        "What is the name of the file or number in the saved files list?\nFile: ")
-                    numToAnalize = input(
-                        "How many words? (leave blank for 10)\nNumber of Words: ")
-                    obj["numToAnalize"] = numToAnalize if numToAnalize.isnumeric() else 10
-                serializedObj = json.dumps(obj)
-                clientSocket.send(str.encode(serializedObj))
+                # this requestMessage could be handled by a different component
+                requestMessage = str.encode(
+                    json.dumps(
+                        InputHandler.handleOption(
+                            InputHandler.getOption()
+                        )
+                    )
+                )
+
+                clientSocket.send(requestMessage)
 
                 # ---- receiving response ------
                 # object can be big depending on number of words!
