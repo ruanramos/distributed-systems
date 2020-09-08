@@ -93,12 +93,9 @@ class MenuOptionHandler():
                 f"{e}\nFile not found. Sent an error message to client {self.clientAddress}")
 
     def manageOption(self):
-        if self.option == 4:
+        if self.option == 3:
             self.handleQuitOption()
         elif self.option == 1:
             self.handleListOption()
         elif self.option == 2:
             self.handleAnalysis()
-        elif self.option == 3:
-            # create new file
-            pass

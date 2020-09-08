@@ -8,8 +8,7 @@ class ClientScreenPrinter():
 
                 1- See saved files
                 2- Choose a file to analize
-                3- Create a new file
-                4- Quit
+                3- Quit
                 """)
 
     @classmethod
