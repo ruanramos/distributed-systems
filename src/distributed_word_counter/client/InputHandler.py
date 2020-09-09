@@ -14,7 +14,7 @@ class InputHandler():
 
     @classmethod
     def validOption(cls, option):
-        # Cheks if an option received from the user is valid
+        """Cheks if an option received from the user is valid"""
         try:
             return int(option) in range(1, 5)
         except ValueError:
@@ -22,10 +22,10 @@ class InputHandler():
 
     @classmethod
     def getOption(cls):
-        # Handles logic to get user option
+        """Handles logic to get user option"""
         option = input("Option: ")
         while not InputHandler.validOption(option):
-            print("Invalid option. Please choose a valid option")
+            ClientScreenPrinter.invalidOption()
             ClientScreenPrinter.showMenu()
             option = input()
         return option
