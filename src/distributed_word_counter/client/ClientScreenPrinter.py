@@ -4,6 +4,9 @@ import logging
 class ClientScreenPrinter():
     """This class handles all the message printed to the console on client side"""
 
+
+class ClientScreenPrinter():
+    """This class handles all the message printed to the console on client side"""
     @classmethod
     def showMenu(cls):
         print("""
