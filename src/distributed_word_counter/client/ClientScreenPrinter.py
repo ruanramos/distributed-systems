@@ -3,10 +3,6 @@ import logging
 
 class ClientScreenPrinter():
     """This class handles all the message printed to the console on client side"""
-
-
-class ClientScreenPrinter():
-    """This class handles all the message printed to the console on client side"""
     @classmethod
     def showMenu(cls):
         print("""
@@ -25,6 +21,10 @@ class ClientScreenPrinter():
     @classmethod
     def confirmConnected(cls, host, port):
         print(f"\n\nClient connected to server!\nHost:{host}\nPort:{port}\n")
+
+    @classmethod
+    def confirmDisconnected(cls):
+        logging.info("Client is closing connection")
 
     @classmethod
     def calculateSpaces(cls, word, index, entry):
@@ -68,11 +68,16 @@ class ClientScreenPrinter():
             print(loadedData["result"])
 
     @classmethod
+    def handleExit(cls):
+        print("Client is closing connection!")
+        exit(0)
+
+    @classmethod
     def handleServerAnswer(cls, loadedData):
         """Handles client console print when answer is received"""
         # this object removes the necessity of ifs and is scallable
         POSSIBLE_ANSWERS = {
-            "close": lambda: logging.info("Quiting program!"),
+            "close": lambda: ClientScreenPrinter.handleExit(),
             "list": lambda: ClientScreenPrinter.printList(loadedData["files"]),
             "analize": lambda: ClientScreenPrinter.printAnalysis(loadedData)
         }
