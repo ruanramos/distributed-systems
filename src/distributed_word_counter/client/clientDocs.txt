@@ -8,6 +8,10 @@
 - The message contains the option chosen by the user, the filename and the 
 number of words that should be analyzed
 
+- The user has the option to ask for an analysis by choosing the file number
+on the list, the filename without extension (txt is default) or the filename
+with extension
+
 - All the interaction with the user is done by the screen printer and input handler
 
 - Client connector detains the communication responsibility
