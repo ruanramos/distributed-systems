@@ -2,12 +2,14 @@ import re
 
 
 class TextAnalizer():
+    """Handles analysis logic"""
 
     def __init__(self, text):
         super().__init__()
         self.text = text
 
     def getWordsCount(self):
+        """Splits and counts words in the text"""
         count = {}
         for word in re.split('[ ,.!?"\n-]+', self.text):
             if word.upper() in count:
@@ -17,7 +19,7 @@ class TextAnalizer():
         return count
 
     def analize(self, numberOfWords):
-        # Analize logic here
+        """Processing of the counting. Sort and then Get top ones"""
         obj = {}
         sortedCount = {k: v for k, v in sorted(
             self.getWordsCount().items(),
