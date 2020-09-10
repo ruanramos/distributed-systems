@@ -1,0 +1,7 @@
+To use the application, save the text files you want to analyse
+into the server/files directory.
+
+Then, run the DatabaseHandler class as main, so that the files are
+loaded into mongodb collection.
+
+Run serverMain and clientMain to start communication.
