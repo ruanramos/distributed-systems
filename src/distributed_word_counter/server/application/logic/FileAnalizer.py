@@ -9,7 +9,7 @@ class TextAnalizer():
 
     def getWordsCount(self):
         count = {}
-        for word in re.split('[ ,.!?"\n-]*', self.text):
+        for word in re.split('[ ,.!?"\n-]+', self.text):
             if word.upper() in count:
                 count[word.upper()] += 1
             else:

@@ -4,6 +4,7 @@ from connection.ServerConnector import ServerConnector
 
 
 if __name__ == "__main__":
+    """Server entry point"""
     logging.basicConfig(
         level=logging.INFO,
         format='%(asctime)s %(message)s',
