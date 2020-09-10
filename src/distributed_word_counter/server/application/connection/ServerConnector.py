@@ -5,6 +5,8 @@ import json
 
 
 class ServerConnector():
+    """This class handles all the communication for the server"""
+
     def __init__(self, host, port, numToListenTo=1, timeout=0):
         super().__init__()
         self.host = host
@@ -16,6 +18,7 @@ class ServerConnector():
         self.address = None
 
     def acceptConnections(self):
+        """Method that opens server for client requests"""
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as serverSocket:
             serverSocket.bind((self.host, self.port))
             serverSocket.listen(self.numToListenTo)
@@ -31,6 +34,7 @@ class ServerConnector():
                 logging.info("Lost connection to client")
 
     def connectionLoop(self):
+        """Method that handles the connection to a client and message exchange"""
         while True:
             # waits for menu option
             receivedObj = self.clientSocket.recv(1024)
@@ -47,7 +51,15 @@ class ServerConnector():
             optionHandler.manageOption()
 
     class MessageHandler():
+        """Class that handles messages related tasks
+
+        It's a nested class since the concept of a message object only 
+        exists in the connector context
+
+        """
+
         def composeMessage(self, *pairs, **opts):
+            """Compose a message given the arguments in pairs or flags"""
             message = {}
             for pair in pairs:
                 message[pair[0]] = pair[1]
@@ -57,6 +69,7 @@ class ServerConnector():
             return message
 
         def updateMessage(self, previousMessage, *pairs, **opts):
+            """Updates a previous existing message object"""
             for pair in pairs:
                 previousMessage[pair[0]] = pair[1]
             for key, value in opts.items():
@@ -65,10 +78,13 @@ class ServerConnector():
             return previousMessage
 
         def encode(self, obj):
+            """Encode object to be sent to client"""
             return str.encode(json.dumps(obj))
 
         def decode(self, obj):
+            """Decode object received from server"""
             return json.loads(obj)
 
         def sendMessage(self, message, clientSocket):
+            """Send an encoded message to client"""
             clientSocket.send(message)
