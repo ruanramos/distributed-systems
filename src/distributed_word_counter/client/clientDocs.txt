@@ -1,0 +1,20 @@
+- The client main is the entry point
+
+- ClientConnector implements the user interface, divided into a connection
+ handler, a input handler and a screen printer
+
+- The client sends messages to the server as a JSON object
+
+- The message contains the option chosen by the user, the filename and the 
+number of words that should be analyzed
+
+- All the interaction with the user is done by the screen printer and input handler
+
+- Client connector detains the communication responsibility
+
+- The server answer comes as a JSON object, containing an answer, 
+a possible list of files, a possible filename and a possible result 
+of an analysis
+
+- Client makes the formmating, but it receives all information already ordered 
+by the server
