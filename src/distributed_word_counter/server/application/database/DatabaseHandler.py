@@ -9,6 +9,13 @@ class DatabaseHandler():
     I made the option to work with a NOSQL database. Files are stored in a 
     mongodb database, in the format of JSON objects.
 
+    {
+        "_id": int,
+        "name": String,
+        "extension": String,
+        "value": bytes
+    }
+
     The text values are encoded and saved as bytes and decoded when the objects 
     are queried.
 
@@ -41,6 +48,31 @@ class DatabaseHandler():
         """Query db for all files"""
         return self.collection.find()
 
+    def saveFile(self, path):
+        """Save an specified file to the database
+
+        This method was added to make the code closer to what was 
+        asked. It's not being used, but the functionality exists.
+
+        Call this method to save a file by it's system path and the
+        analysis will work just fine.
+
+        """
+        if path.endswith(".txt"):
+            try:
+                with open(path, 'r') as f:
+                    fullName = f.name.split('/')[-1].split('.')
+                    self.collection.insert(
+                        {
+                            "name": fullName[0],
+                            "extension": fullName[1],
+                            "value": bytes(f.read(), 'utf8')
+                        }
+                    )
+                    logging.info(f'Ok to file {f}')
+            except FileNotFoundError:
+                raise Exception("File not found")
+
     def saveAllFiles(self):
         """Save all files from the server files folder to mongodb
 
@@ -70,6 +102,7 @@ if __name__ == "__main__":
     from files folder into mongodb
     """
     a = DatabaseHandler()
+    # a.saveFile("/home/ruanramos/Desktop/a.txt")
     # for f in a.getAllFiles():
     #    print(f["value"][:300])
     a.collection.drop()
