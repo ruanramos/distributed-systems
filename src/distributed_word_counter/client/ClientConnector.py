@@ -8,8 +8,12 @@ from InputHandler import InputHandler
 class ClientConnector():
     """
     This class makes the connection of the client to the server
+
     The client message is sent as an object {option, filename, numberOfWordsToAnalyze}
-    The server message is received as an object {answer, result, filename}
+
+    The server message is received as an object {answer, result, filename}, with some
+    optional fields
+
     """
 
     @classmethod

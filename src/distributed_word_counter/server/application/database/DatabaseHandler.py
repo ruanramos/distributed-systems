@@ -4,7 +4,15 @@ import logging
 
 
 class DatabaseHandler():
-    """This is the database layer. It receives a request call from logic layer"""
+    """This is the database layer. It receives a request call from logic layer
+
+    I made the option to work with a NOSQL database. Files are stored in a 
+    mongodb database, in the format of JSON objects.
+
+    The text values are encoded and saved as bytes and decoded when the objects 
+    are queried.
+
+    """
 
     def __init__(self):
         super().__init__()
@@ -58,7 +66,9 @@ class DatabaseHandler():
 
 
 if __name__ == "__main__":
-    """Execute this main method to reset the db and load files from files folder"""
+    """Execute this main method to reset the db and load files 
+    from files folder into mongodb
+    """
     a = DatabaseHandler()
     # for f in a.getAllFiles():
     #    print(f["value"][:300])
