@@ -45,15 +45,16 @@ class ClientScreenPrinter():
         print("\n--------------------------------------------\n")
 
     @classmethod
-    def printAnalysis(cls, loadedData):
+    def printAnalysis(cls, loadedData, numToAnalize):
         """Print to the screen result of the analysis on client side"""
         try:
             print("\n--------------------------------------------\n")
             print(
                 f"  Result of the analysis for file \"{loadedData['filename']}\": \n")
             if loadedData['result'] != "File not found":
+                print(loadedData)
                 print(
-                    f"  {obj['numToAnalize']} most used words:\n")
+                    f"  {numToAnalize} most used words:\n")
             for entry in loadedData["result"].items():
                 word = entry[1][0].upper()
                 numOfTimes = entry[1][1]
@@ -73,12 +74,12 @@ class ClientScreenPrinter():
         exit(0)
 
     @classmethod
-    def handleServerAnswer(cls, loadedData):
+    def handleServerAnswer(cls, loadedData, numToAnalize):
         """Handles client console print when answer is received"""
         # this object removes the necessity of ifs and is scallable
         POSSIBLE_ANSWERS = {
             "close": lambda: ClientScreenPrinter.handleExit(),
             "list": lambda: ClientScreenPrinter.printList(loadedData["files"]),
-            "analize": lambda: ClientScreenPrinter.printAnalysis(loadedData)
+            "analize": lambda: ClientScreenPrinter.printAnalysis(loadedData, numToAnalize)
         }
         POSSIBLE_ANSWERS[loadedData["answer"]]()

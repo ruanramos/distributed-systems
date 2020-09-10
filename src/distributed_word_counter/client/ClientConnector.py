@@ -37,20 +37,16 @@ class ClientConnector():
         while True:
             ClientScreenPrinter.showMenu()
             try:
-                # this requestMessage could be handled by a different component
-                requestMessage = str.encode(
-                    json.dumps(
-                        InputHandler.handleOption(
-                            InputHandler.getOption()
-                        )
-                    )
-                )
-                clientSocket.send(requestMessage)
+                requestMessage = InputHandler.handleOption(
+                    InputHandler.getOption())
+                encodedRequestMessage = str.encode(json.dumps(requestMessage))
+                clientSocket.send(encodedRequestMessage)
 
                 # object can be big depending on number of words!
                 receivedObj = clientSocket.recv(50000)
                 loadedData = json.loads(receivedObj)
 
-                ClientScreenPrinter.handleServerAnswer(loadedData)
+                ClientScreenPrinter.handleServerAnswer(
+                    loadedData, requestMessage['numToAnalize'])
             except Exception:
                 raise Exception("Lost connection to server. Shutting down")
