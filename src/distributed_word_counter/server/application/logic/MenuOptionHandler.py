@@ -5,6 +5,12 @@ from logic.FileAnalizer import TextAnalizer
 
 
 class MenuOptionHandler():
+    """Handles the option received by message from the client
+
+    This class is kinda ugly. Could be improved and split into 
+    more components
+
+    """
 
     def __init__(self, loadedData, clientSocket,
                  clientAddress, messageComposer):
@@ -21,6 +27,7 @@ class MenuOptionHandler():
         self.messageComposer = messageComposer
 
     def sendErrorMessage(self, message):
+        """Sends an error message to the client with specified message"""
         return self.messageComposer.updateMessage(
             message,
             ("filename", self.filenameToAnalize),
@@ -28,12 +35,23 @@ class MenuOptionHandler():
         )
 
     def handleQuitOption(self):
+        """Handles the client quit option
+
+        Just to be clear, the ending of the communication is not being done
+        in a very clear way. Since TCP just closes the connection when client
+        closes it, there should be no need to do anything about the quit option.
+
+        For now, it's going to stay like this, but the ending of the communication
+        should just be a shutdown on client side that's automatic handled
+
+        """
         logging.info(
             f"Client {self.clientAddress} asked for a client side shutdown")
         self.clientSocket.send(self.messageComposer.composeMessage(
             ("answer", "close"), encode=True))
 
     def handleListOption(self):
+        """Compose a message including all files saved and send to client"""
         logging.info(
             f"Client {self.clientAddress} asked for a list of saved files")
         self.clientSocket.send(
@@ -48,6 +66,7 @@ class MenuOptionHandler():
             f"Sent a list of saved files to client {self.clientAddress}")
 
     def handleAnalysis(self):
+        """Compose a default message and populates the fields after analysis happens"""
         message = self.messageComposer.composeMessage(
             ("answer", "analize"),
             ("result", None),
@@ -93,6 +112,7 @@ class MenuOptionHandler():
                 f"{e}\nFile not found. Sent an error message to client {self.clientAddress}")
 
     def manageOption(self):
+        """Method to make it easy to add new options"""
         if self.option == 3:
             self.handleQuitOption()
         elif self.option == 1:
