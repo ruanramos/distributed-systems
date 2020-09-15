@@ -2,6 +2,8 @@ import socket
 import logging
 from logic.MenuOptionHandler import MenuOptionHandler
 import json
+import select
+import sys
 
 
 class ServerConnector():
@@ -36,14 +38,36 @@ class ServerConnector():
             serverSocket.bind((self.host, self.port))
             serverSocket.listen(self.numToListenTo)
 
+            # Making server able to read data from server socket and from stdin
+            acceptedEntriesDescriptors = [serverSocket, sys.stdin]
+
             while True:
                 logging.info(
                     f"Server is waiting for client connection. Timeout in {self.timeout} seconds")
                 serverSocket.settimeout(self.timeout)
-                self.clientSocket, self.address = serverSocket.accept()
-                with self.clientSocket:
-                    logging.info(f"Connected by {self.address}")
-                    self.connectionLoop()
+
+                """
+                If there is no input to read, select call will be blocking
+                The moment it receives a connection request or something from 
+                stdin (or both) code continues
+                
+                """
+                # Will ignore write entries and exceptions for now
+                entriesToRead, _, _ = select.select(acceptedEntriesDescriptors, [], [])
+                for entry in entriesToRead:
+                    if entry == serverSocket:
+                        self.clientSocket, self.address = serverSocket.accept()
+                        with self.clientSocket:
+                            logging.info(f"Connected by {self.address}")
+                            self.connectionLoop()
+                    
+                    elif entry == sys.stdin:
+                        cmd = input()
+                        if cmd == "quit":
+                            serverSocket.close()
+                            sys.exit(0)
+
+
                 logging.info("Lost connection to client")
 
     def connectionLoop(self):
