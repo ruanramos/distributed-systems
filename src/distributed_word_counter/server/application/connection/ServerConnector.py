@@ -37,6 +37,7 @@ class ServerConnector():
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as serverSocket:
             serverSocket.bind((self.host, self.port))
             serverSocket.listen(self.numToListenTo)
+            serverSocket.setblocking(False);
 
             # Making server able to read data from server socket and from stdin
             acceptedEntriesDescriptors = [serverSocket, sys.stdin]
