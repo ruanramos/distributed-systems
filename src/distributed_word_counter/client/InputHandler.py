@@ -42,7 +42,8 @@ class InputHandler():
         dict:object containing the request message values
 
         """
-
+        if option == "3":
+            exit()
         messageObject = {
             "option": option,
             "filename": None,

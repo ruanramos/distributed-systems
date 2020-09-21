@@ -74,6 +74,11 @@ class ClientScreenPrinter():
         exit(0)
 
     @classmethod
+    def handleError(cls):
+        print("Lost connection to server")
+        exit(0)
+
+    @classmethod
     def handleServerAnswer(cls, loadedData, numToAnalize):
         """Handles client console print when answer is received"""
         # this object removes the necessity of ifs and is scallable

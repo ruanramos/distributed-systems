@@ -46,14 +46,14 @@ class MenuOptionHandler():
 
         """
         logging.info(
-            f"Client {self.clientAddress} asked for a client side shutdown")
+            f"(INFO) Client {self.clientAddress} asked for a client side shutdown")
         self.clientSocket.send(self.messageComposer.composeMessage(
             ("answer", "close"), encode=True))
 
     def handleListOption(self):
         """Compose a message including all files saved and send to client"""
         logging.info(
-            f"Client {self.clientAddress} asked for a list of saved files")
+            f"(INFO) Client {self.clientAddress} asked for a list of saved files")
         self.clientSocket.send(
             self.messageComposer.composeMessage(
                 ("answer", "list"),
@@ -63,7 +63,7 @@ class MenuOptionHandler():
             )
         )
         logging.info(
-            f"Sent a list of saved files to client {self.clientAddress}")
+            f"(INFO) Sent a list of saved files to client {self.clientAddress}")
 
     def handleAnalysis(self):
         """Compose a default message and populates the fields after analysis happens"""
@@ -106,16 +106,16 @@ class MenuOptionHandler():
         self.clientSocket.send(str.encode(json.dumps(message)))
         try:
             logging.info(
-                f"Sent an analysis of file \"{fileToAnalize['name']}.{fileToAnalize['extension']}\" to client {self.clientAddress}")
+                f"(INFO) Sent an analysis of file \"{fileToAnalize['name']}.{fileToAnalize['extension']}\" to client {self.clientAddress}")
         except Exception as e:
             logging.warning(
-                f"{e}\nFile not found. Sent an error message to client {self.clientAddress}")
+                f"(ERROR) {e}\nFile not found. Sent an error message to client {self.clientAddress}")
 
     def manageOption(self):
         """Method to make it easy to add new options"""
-        if self.option == 3:
-            self.handleQuitOption()
-        elif self.option == 1:
+        if self.option == 1:
             self.handleListOption()
         elif self.option == 2:
             self.handleAnalysis()
+        if self.option == 3:
+            self.handleQuitOption()
