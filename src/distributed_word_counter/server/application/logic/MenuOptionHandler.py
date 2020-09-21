@@ -113,9 +113,9 @@ class MenuOptionHandler():
 
     def manageOption(self):
         """Method to make it easy to add new options"""
-        if self.option == 3:
-            self.handleQuitOption()
-        elif self.option == 1:
+        if self.option == 1:
             self.handleListOption()
         elif self.option == 2:
             self.handleAnalysis()
+        if self.option == 3:
+            self.handleQuitOption()

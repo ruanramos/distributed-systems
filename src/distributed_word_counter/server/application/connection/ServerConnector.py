@@ -27,7 +27,7 @@ class ServerConnector():
         super().__init__()
         self.host = host
         self.port = port
-        #self.timeout = timeout
+        # self.timeout = timeout
         self.numToListenTo = numToListenTo
         self.host = socket.gethostbyname(socket.gethostname())
         self.activeSocketConnections = {}
@@ -39,18 +39,19 @@ class ServerConnector():
             try:
                 serverSocket.bind((self.host, self.port))
             except OSError as e:
-                serverSocket.bind((self.host, self.port + 1))
+                self.port += 1
+                serverSocket.bind((self.host, self.port))
             serverSocket.listen(self.numToListenTo)
             serverSocket.setblocking(0);
+            logging.info(f"(INFO) Server listening to port {self.port}")
 
             # Making server able to read data from server socket and from stdin
             self.entries.append(serverSocket)
 
             while True:
                 logging.info(
-                    f"Server is waiting for client connection... <ServerConnector.py>")
-                #serverSocket.settimeout(self.timeout)
-                print("\n", self.entries, "\n")
+                    f"(INFO) Server is waiting for requests... <ServerConnector.py>\n(DEBUG) Entries: {len(self.entries)}\n(DEBUG) Active Sockets: {len(self.activeSocketConnections)}\n")
+                # serverSocket.settimeout(self.timeout)
 
                 """
                 If there is no input to read, select call will be blocking
@@ -60,9 +61,9 @@ class ServerConnector():
                 """
                 # Will ignore write entries and exceptions for now
                 entriesToRead, entriesToWrite, exceptions = None, None, None
-                entriesToRead, entriesToWrite, exceptions = select.select(self.entries, [], []) # try catch to catch value error and remove connection from SOCKET_LIST
-                
 
+                entriesToRead, entriesToWrite, exceptions = select.select(self.entries, [],
+                                                                          [])  # try catch to catch value error and remove connection from SOCKET_LIST
                 for entry in entriesToRead:
                     if entry == serverSocket:
                         """New connection request"""
@@ -70,10 +71,12 @@ class ServerConnector():
                         clientSocket.setblocking(False)
                         self.entries.append(clientSocket)
                         self.activeSocketConnections[clientSocket] = address
-                    
+                        logging.info(f"(INFO) Received connection request from {clientSocket.getpeername()}")
+
                     elif entry == sys.stdin:
                         """Read from stdin"""
                         cmd = input()
+                        # Create a commands object for scalability
                         if cmd == "quit":
                             if not self.activeSocketConnections:
                                 logging.info("No active connections found, shutting down server")
@@ -90,18 +93,16 @@ class ServerConnector():
                             logging.info("This command does not exist\n")
                     else:
                         """New request from client"""
-                        with entry:
-                            logging.info(f"Connected by {self.activeSocketConnections[entry]}")
-                            self.answerRequest(entry, self.activeSocketConnections[entry])
+                        self.answerRequest(entry, self.activeSocketConnections[entry])
 
-
-                #logging.info("Lost connection to client")
+                # logging.info("Lost connection to client")
 
     def answerRequest(self, clientSocket, clientAddress):
         """Method that handles the connection to a client and message exchange"""
+
         # waits for menu option
         receivedObj = ""
-        
+
         # needed to add this try/catch to make it work...
         # https://stackoverflow.com/questions/38419606/socket-error-errno-11-resource-temporarily-unavailable-appears-randomly/38526115
         try:
@@ -111,10 +112,13 @@ class ServerConnector():
                 pass
 
         if not receivedObj:
-            logging.info(f"Client {self.activeSocketConnections[clientSocket]} closed connection")
+            logging.info(f"(INFO) Client {self.activeSocketConnections[clientSocket]} closed connection")
             del self.activeSocketConnections[clientSocket]
             self.entries.remove(clientSocket)
             return
+
+        logging.info(f"(INFO) Client {clientAddress} just made a request")
+
         # unserialize data
         messageComposer = self.MessageHandler()
         optionHandler = MenuOptionHandler(
@@ -124,7 +128,6 @@ class ServerConnector():
             messageComposer,
         )
         optionHandler.manageOption()
-            
 
     class MessageHandler():
         """Class that handles messages related tasks
