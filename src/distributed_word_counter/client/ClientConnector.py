@@ -39,8 +39,8 @@ class ClientConnector():
 
         """
         while True:
-            ClientScreenPrinter.showMenu()
             try:
+                ClientScreenPrinter.showMenu()
                 requestMessage = InputHandler.handleOption(
                     InputHandler.getOption())
                 encodedRequestMessage = str.encode(json.dumps(requestMessage))
@@ -48,9 +48,13 @@ class ClientConnector():
 
                 # object can be big depending on number of words!
                 receivedObj = clientSocket.recv(50000)
-                loadedData = json.loads(receivedObj)
+                if not receivedObj:
+                    ClientScreenPrinter.handleError()
+                    raise Exception("Lost connection to server. Shutting down")
 
-                ClientScreenPrinter.handleServerAnswer(
-                    loadedData, requestMessage['numToAnalize'])
-            except Exception:
-                raise Exception("Lost connection to server. Shutting down")
+                else:
+                    loadedData = json.loads(receivedObj)
+
+                    ClientScreenPrinter.handleServerAnswer(loadedData, requestMessage['numToAnalize'])
+            except Exception as e:
+                exit(0)
