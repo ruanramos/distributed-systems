@@ -1,7 +1,6 @@
 import logging
 import sys
-from connection.ServerConnector import ServerConnector
-
+from server.application.connection import ServerConnector
 
 if __name__ == "__main__":
     """Server entry point"""
