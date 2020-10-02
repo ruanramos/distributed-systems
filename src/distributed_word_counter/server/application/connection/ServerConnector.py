@@ -7,7 +7,7 @@ import sys
 import errno
 
 
-class ServerConnector():
+class ServerConnector:
     """This class handles all the communication for the server
 
     The server is iterative, it can only treat requests from
@@ -42,7 +42,7 @@ class ServerConnector():
                 self.port += 1
                 serverSocket.bind((self.host, self.port))
             serverSocket.listen(self.numToListenTo)
-            serverSocket.setblocking(0);
+            serverSocket.setblocking(0)
             logging.info(f"(INFO) Server listening to port {self.port}")
 
             # Making server able to read data from server socket and from stdin
@@ -60,8 +60,6 @@ class ServerConnector():
                 
                 """
                 # Will ignore write entries and exceptions for now
-                entriesToRead, entriesToWrite, exceptions = None, None, None
-
                 entriesToRead, entriesToWrite, exceptions = select.select(self.entries, [],
                                                                           [])  # try catch to catch value error and remove connection from SOCKET_LIST
                 for entry in entriesToRead:

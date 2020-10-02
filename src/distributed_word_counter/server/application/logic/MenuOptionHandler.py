@@ -28,7 +28,7 @@ class MenuOptionHandler():
 
     def sendErrorMessage(self, message):
         """Sends an error message to the client with specified message"""
-        return self.messageComposer.updateMessage(
+        return self.messageComposer.update_message(
             message,
             ("filename", self.filenameToAnalize),
             ("result", "File not found")
@@ -77,7 +77,7 @@ class MenuOptionHandler():
         try:
             fileToAnalize = dbHandler.getFileById(
                 int(self.filenameToAnalize))[0]
-            self.messageComposer.updateMessage(
+            self.messageComposer.update_message(
                 message,
                 ("filename",
                  f"{fileToAnalize['name']}.{fileToAnalize['extension']}")
@@ -87,7 +87,7 @@ class MenuOptionHandler():
             try:
                 fileToAnalize = dbHandler.getFile(
                     self.filenameToAnalize)[0]
-                self.messageComposer.updateMessage(
+                self.messageComposer.update_message(
                     message,
                     (
                         "filename",

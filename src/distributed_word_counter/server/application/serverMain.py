@@ -15,5 +15,5 @@ if __name__ == "__main__":
     CON_TIMEOUT = 15
     LISTEN_BACKLOG = 5
     serverConnector = ServerConnector(HOST, PORT, LISTEN_BACKLOG, CON_TIMEOUT)
-    serverConnector.acceptConnections()
+    serverConnector.accept_connections()
     logging.info(f"Closed Connection to {serverConnector.address}")
