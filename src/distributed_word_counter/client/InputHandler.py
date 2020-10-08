@@ -26,7 +26,7 @@ class InputHandler():
         option = input("Option: ")
         while not InputHandler.validOption(option):
             ClientScreenPrinter.invalidOption()
-            ClientScreenPrinter.showMenu()
+            ClientScreenPrinter.menu()
             option = input()
         return option
 

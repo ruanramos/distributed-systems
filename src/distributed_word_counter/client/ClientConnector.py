@@ -40,7 +40,7 @@ class ClientConnector():
         """
         while True:
             try:
-                ClientScreenPrinter.showMenu()
+                ClientScreenPrinter.menu()
                 requestMessage = InputHandler.handleOption(
                     InputHandler.getOption())
                 encodedRequestMessage = str.encode(json.dumps(requestMessage))
