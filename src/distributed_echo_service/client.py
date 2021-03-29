@@ -13,9 +13,12 @@ if __name__ == "__main__":
 
         while True:
             msg = input("Send a message: ")
+            if (msg == 'quit'):
+                break
             clientSocket.send(bytes(msg, 'utf8'))
             print("Message delivered to server, waiting for response .....")
             receivedMessage = clientSocket.recv(1024)
-            print(f"Message received back from server: {str(receivedMessage, 'utf8')}")
+            print(
+                f"Message received back from server: {str(receivedMessage, 'utf8')}")
 
         print("Client is closing connection")
